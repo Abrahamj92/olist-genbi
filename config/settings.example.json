@@ -1,0 +1,11 @@
+{
+  "llm_mode": "offline",
+  "aws_region": "us-east-1",
+  "athena_database": "olist_master",
+  "allowed_view": "vw_olist_genbi_pedidos",
+  "athena_output_s3": "s3://olist-retail-2026/athena-results/",
+  "athena_workgroup": "primary",
+  "bedrock_model_id": "us.amazon.nova-micro-v1:0",
+  "aws_profile": null,
+  "bedrock_aws_profile": null
+}

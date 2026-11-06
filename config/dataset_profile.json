@@ -1,0 +1,424 @@
+{
+  "dataset_name": "Olist - Insatisfaccion del cliente por pedido",
+  "business_domain": "E-commerce marketplace (Brasil). Analisis de los aspectos de la gestion de pedidos asociados con la insatisfaccion del cliente, 2016-2025.",
+  "database": "olist_master",
+  "allowed_view": "vw_olist_genbi_pedidos",
+  "grain_hint": "Una fila representa un pedido (order_id) del datamart olist_master. Incluye pedidos con resena, con lineas o con ambas. Las resenas y las lineas ya estan agregadas por pedido.",
+  "known_business_notes": [
+    "La vista vw_olist_genbi_pedidos tiene 449 422 filas = 449 422 pedidos distintos (verificado en Athena, QG1).",
+    "441 600 pedidos tienen al menos una resena (tiene_resena = 1) y 448 666 tienen lineas (tiene_lineas = 1).",
+    "Un pedido puede tener varias resenas: n_resenas y n_resenas_bajas son conteos por pedido.",
+    "score_prom es el promedio de las resenas del pedido. review_score no es aditivo: nunca se suma.",
+    "Pedido con calificacion baja (pedido_bajo = 1): score_prom <= 2. Es la base del KPI-1, el KPI central del proyecto.",
+    "KPI-2 se mide por resena: SUM(n_resenas_bajas) / SUM(n_resenas).",
+    "La entrega tardia solo es evaluable en pedidos con resena y con fecha de entrega al cliente y fecha estimada disponibles (entrega_evaluable = 1).",
+    "La resena califica el pedido completo: no se puede atribuir la insatisfaccion a un producto. categoria_unica solo tiene nombre de categoria si el pedido tiene una sola categoria.",
+    "2016-2018 son datos reales de Olist; 2019-2025 son datos simulados (columna periodo_datos).",
+    "El datamart no contiene identificadores de cliente (ni customer_id ni customer_unique_id). Los compradores unicos no se pueden calcular.",
+    "Moneda: real brasileno (BRL, R$). Los resultados muestran asociaciones, no causas."
+  ],
+  "columns": [
+    {
+      "name": "order_id",
+      "type": "varchar"
+    },
+    {
+      "name": "fecha_compra",
+      "type": "date"
+    },
+    {
+      "name": "anio",
+      "type": "integer"
+    },
+    {
+      "name": "mes",
+      "type": "integer"
+    },
+    {
+      "name": "nombre_mes",
+      "type": "varchar(13)"
+    },
+    {
+      "name": "trimestre",
+      "type": "integer"
+    },
+    {
+      "name": "anio_mes",
+      "type": "varchar"
+    },
+    {
+      "name": "periodo_datos",
+      "type": "varchar(18)"
+    },
+    {
+      "name": "codigo_estado_pedido",
+      "type": "varchar"
+    },
+    {
+      "name": "estado_pedido",
+      "type": "varchar(16)"
+    },
+    {
+      "name": "grupo_estado_pedido",
+      "type": "varchar(31)"
+    },
+    {
+      "name": "estado_cliente",
+      "type": "varchar"
+    },
+    {
+      "name": "ciudad_cliente",
+      "type": "varchar"
+    },
+    {
+      "name": "region_cliente",
+      "type": "varchar(12)"
+    },
+    {
+      "name": "tiene_resena",
+      "type": "integer"
+    },
+    {
+      "name": "n_resenas",
+      "type": "bigint"
+    },
+    {
+      "name": "n_resenas_bajas",
+      "type": "bigint"
+    },
+    {
+      "name": "score_prom",
+      "type": "double"
+    },
+    {
+      "name": "pedido_bajo",
+      "type": "integer"
+    },
+    {
+      "name": "entrega_evaluable",
+      "type": "integer"
+    },
+    {
+      "name": "entrega_tarde",
+      "type": "integer"
+    },
+    {
+      "name": "cumplimiento_plazo",
+      "type": "varchar(12)"
+    },
+    {
+      "name": "tiene_lineas",
+      "type": "integer"
+    },
+    {
+      "name": "n_items",
+      "type": "bigint"
+    },
+    {
+      "name": "n_vendedores",
+      "type": "bigint"
+    },
+    {
+      "name": "grupo_vendedores",
+      "type": "varchar(10)"
+    },
+    {
+      "name": "precio",
+      "type": "double"
+    },
+    {
+      "name": "flete",
+      "type": "double"
+    },
+    {
+      "name": "rango_flete",
+      "type": "varchar(11)"
+    },
+    {
+      "name": "n_categorias",
+      "type": "bigint"
+    },
+    {
+      "name": "tipo_pedido_categoria",
+      "type": "varchar(17)"
+    },
+    {
+      "name": "categoria_unica",
+      "type": "varchar"
+    }
+  ],
+  "sample_rows": [
+    {
+      "order_id": "70e60b51f4eaf866e29b3bb0c193713b",
+      "fecha_compra": "2025-02-04",
+      "anio": "2025",
+      "mes": "2",
+      "nombre_mes": "Febrero",
+      "trimestre": "1",
+      "anio_mes": "2025-02",
+      "periodo_datos": "Simulado 2019-2025",
+      "codigo_estado_pedido": "delivered",
+      "estado_pedido": "Entregado",
+      "grupo_estado_pedido": "Concretado",
+      "estado_cliente": "RS",
+      "ciudad_cliente": "estancia velha",
+      "region_cliente": "Sur",
+      "tiene_resena": "1",
+      "n_resenas": "1",
+      "n_resenas_bajas": "1",
+      "score_prom": "1.0",
+      "pedido_bajo": "1",
+      "entrega_evaluable": "1",
+      "entrega_tarde": "1",
+      "cumplimiento_plazo": "Tarde",
+      "tiene_lineas": "1",
+      "n_items": "2",
+      "n_vendedores": "2",
+      "grupo_vendedores": "2 o mas",
+      "precio": "259.19",
+      "flete": "62.089999999999996",
+      "rango_flete": "2. 10-25%",
+      "n_categorias": "2",
+      "tipo_pedido_categoria": "Varias categorias",
+      "categoria_unica": "Varias categorias"
+    },
+    {
+      "order_id": "df71b52d0cd25eea5dd4d220e3568cc9",
+      "fecha_compra": "2021-01-22",
+      "anio": "2021",
+      "mes": "1",
+      "nombre_mes": "Enero",
+      "trimestre": "1",
+      "anio_mes": "2021-01",
+      "periodo_datos": "Simulado 2019-2025",
+      "codigo_estado_pedido": "delivered",
+      "estado_pedido": "Entregado",
+      "grupo_estado_pedido": "Concretado",
+      "estado_cliente": "RJ",
+      "ciudad_cliente": "nova iguacu",
+      "region_cliente": "Sudeste",
+      "tiene_resena": "1",
+      "n_resenas": "1",
+      "n_resenas_bajas": "0",
+      "score_prom": "4.0",
+      "pedido_bajo": "0",
+      "entrega_evaluable": "1",
+      "entrega_tarde": "0",
+      "cumplimiento_plazo": "A tiempo",
+      "tiene_lineas": "1",
+      "n_items": "1",
+      "n_vendedores": "1",
+      "grupo_vendedores": "1",
+      "precio": "186.95",
+      "flete": "21.85",
+      "rango_flete": "2. 10-25%",
+      "n_categorias": "1",
+      "tipo_pedido_categoria": "Una categoria",
+      "categoria_unica": "beleza_saude"
+    },
+    {
+      "order_id": "fb89aa3503475778bd32dae2f9737046",
+      "fecha_compra": "2023-12-08",
+      "anio": "2023",
+      "mes": "12",
+      "nombre_mes": "Diciembre",
+      "trimestre": "4",
+      "anio_mes": "2023-12",
+      "periodo_datos": "Simulado 2019-2025",
+      "codigo_estado_pedido": "delivered",
+      "estado_pedido": "Entregado",
+      "grupo_estado_pedido": "Concretado",
+      "estado_cliente": "RS",
+      "ciudad_cliente": "porto alegre",
+      "region_cliente": "Sur",
+      "tiene_resena": "1",
+      "n_resenas": "1",
+      "n_resenas_bajas": "0",
+      "score_prom": "5.0",
+      "pedido_bajo": "0",
+      "entrega_evaluable": "1",
+      "entrega_tarde": "0",
+      "cumplimiento_plazo": "A tiempo",
+      "tiene_lineas": "1",
+      "n_items": "1",
+      "n_vendedores": "1",
+      "grupo_vendedores": "1",
+      "precio": "159.99",
+      "flete": "29.71",
+      "rango_flete": "2. 10-25%",
+      "n_categorias": "1",
+      "tipo_pedido_categoria": "Una categoria",
+      "categoria_unica": "relogios_presentes"
+    },
+    {
+      "order_id": "b3365dbae098098ee31d2d5ce43a6aa1",
+      "fecha_compra": "2020-12-12",
+      "anio": "2020",
+      "mes": "12",
+      "nombre_mes": "Diciembre",
+      "trimestre": "4",
+      "anio_mes": "2020-12",
+      "periodo_datos": "Simulado 2019-2025",
+      "codigo_estado_pedido": "delivered",
+      "estado_pedido": "Entregado",
+      "grupo_estado_pedido": "Concretado",
+      "estado_cliente": "SP",
+      "ciudad_cliente": "lucelia",
+      "region_cliente": "Sudeste",
+      "tiene_resena": "1",
+      "n_resenas": "1",
+      "n_resenas_bajas": "0",
+      "score_prom": "3.0",
+      "pedido_bajo": "0",
+      "entrega_evaluable": "1",
+      "entrega_tarde": "0",
+      "cumplimiento_plazo": "A tiempo",
+      "tiene_lineas": "1",
+      "n_items": "1",
+      "n_vendedores": "1",
+      "grupo_vendedores": "1",
+      "precio": "63.96",
+      "flete": "6.64",
+      "rango_flete": "2. 10-25%",
+      "n_categorias": "1",
+      "tipo_pedido_categoria": "Una categoria",
+      "categoria_unica": "moveis_decoracao"
+    },
+    {
+      "order_id": "46bd2c5d99852bfd414e65f29bf78341",
+      "fecha_compra": "2023-03-08",
+      "anio": "2023",
+      "mes": "3",
+      "nombre_mes": "Marzo",
+      "trimestre": "1",
+      "anio_mes": "2023-03",
+      "periodo_datos": "Simulado 2019-2025",
+      "codigo_estado_pedido": "delivered",
+      "estado_pedido": "Entregado",
+      "grupo_estado_pedido": "Concretado",
+      "estado_cliente": "SP",
+      "ciudad_cliente": "sao paulo",
+      "region_cliente": "Sudeste",
+      "tiene_resena": "1",
+      "n_resenas": "1",
+      "n_resenas_bajas": "0",
+      "score_prom": "4.0",
+      "pedido_bajo": "0",
+      "entrega_evaluable": "1",
+      "entrega_tarde": "0",
+      "cumplimiento_plazo": "A tiempo",
+      "tiene_lineas": "1",
+      "n_items": "1",
+      "n_vendedores": "1",
+      "grupo_vendedores": "1",
+      "precio": "35.89",
+      "flete": "7.67",
+      "rango_flete": "2. 10-25%",
+      "n_categorias": "1",
+      "tipo_pedido_categoria": "Una categoria",
+      "categoria_unica": "brinquedos"
+    },
+    {
+      "order_id": "f578588dca59e0deeb7f66d7cdd68e57",
+      "fecha_compra": "2025-12-24",
+      "anio": "2025",
+      "mes": "12",
+      "nombre_mes": "Diciembre",
+      "trimestre": "4",
+      "anio_mes": "2025-12",
+      "periodo_datos": "Simulado 2019-2025",
+      "codigo_estado_pedido": "delivered",
+      "estado_pedido": "Entregado",
+      "grupo_estado_pedido": "Concretado",
+      "estado_cliente": "AL",
+      "ciudad_cliente": "maceio",
+      "region_cliente": "Nordeste",
+      "tiene_resena": "1",
+      "n_resenas": "1",
+      "n_resenas_bajas": "0",
+      "score_prom": "5.0",
+      "pedido_bajo": "0",
+      "entrega_evaluable": "1",
+      "entrega_tarde": "0",
+      "cumplimiento_plazo": "A tiempo",
+      "tiene_lineas": "1",
+      "n_items": "1",
+      "n_vendedores": "1",
+      "grupo_vendedores": "1",
+      "precio": "61.88",
+      "flete": "6.22",
+      "rango_flete": "2. 10-25%",
+      "n_categorias": "1",
+      "tipo_pedido_categoria": "Una categoria",
+      "categoria_unica": "malas_acessorios"
+    },
+    {
+      "order_id": "ee87278ddc368d621c71b6c5f6673a6f",
+      "fecha_compra": "2021-05-06",
+      "anio": "2021",
+      "mes": "5",
+      "nombre_mes": "Mayo",
+      "trimestre": "2",
+      "anio_mes": "2021-05",
+      "periodo_datos": "Simulado 2019-2025",
+      "codigo_estado_pedido": "delivered",
+      "estado_pedido": "Entregado",
+      "grupo_estado_pedido": "Concretado",
+      "estado_cliente": "SP",
+      "ciudad_cliente": "sao paulo",
+      "region_cliente": "Sudeste",
+      "tiene_resena": "1",
+      "n_resenas": "1",
+      "n_resenas_bajas": "1",
+      "score_prom": "1.0",
+      "pedido_bajo": "1",
+      "entrega_evaluable": "1",
+      "entrega_tarde": "1",
+      "cumplimiento_plazo": "Tarde",
+      "tiene_lineas": "1",
+      "n_items": "1",
+      "n_vendedores": "1",
+      "grupo_vendedores": "1",
+      "precio": "223.69",
+      "flete": "25.69",
+      "rango_flete": "2. 10-25%",
+      "n_categorias": "1",
+      "tipo_pedido_categoria": "Una categoria",
+      "categoria_unica": "telefonia"
+    },
+    {
+      "order_id": "8dcdc951007228bd16bdd6c43171390f",
+      "fecha_compra": "2019-07-21",
+      "anio": "2019",
+      "mes": "7",
+      "nombre_mes": "Julio",
+      "trimestre": "3",
+      "anio_mes": "2019-07",
+      "periodo_datos": "Simulado 2019-2025",
+      "codigo_estado_pedido": "delivered",
+      "estado_pedido": "Entregado",
+      "grupo_estado_pedido": "Concretado",
+      "estado_cliente": "SP",
+      "ciudad_cliente": "nova campina",
+      "region_cliente": "Sudeste",
+      "tiene_resena": "1",
+      "n_resenas": "1",
+      "n_resenas_bajas": "0",
+      "score_prom": "3.0",
+      "pedido_bajo": "0",
+      "entrega_evaluable": "1",
+      "entrega_tarde": "0",
+      "cumplimiento_plazo": "A tiempo",
+      "tiene_lineas": "1",
+      "n_items": "2",
+      "n_vendedores": "2",
+      "grupo_vendedores": "2 o mas",
+      "precio": "348.6",
+      "flete": "46.989999999999995",
+      "rango_flete": "2. 10-25%",
+      "n_categorias": "1",
+      "tipo_pedido_categoria": "Una categoria",
+      "categoria_unica": "beleza_saude"
+    }
+  ]
+}

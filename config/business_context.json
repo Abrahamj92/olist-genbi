@@ -1,0 +1,18 @@
+{
+  "dataset_name": "Olist - Insatisfaccion del cliente por pedido",
+  "business_domain": "E-commerce marketplace (Brasil). Analisis de los aspectos de la gestion de pedidos asociados con la insatisfaccion del cliente, 2016-2025.",
+  "grain": "Una fila representa un pedido (order_id) del datamart olist_master. Incluye pedidos con resena, con lineas o con ambas. Las resenas y las lineas ya estan agregadas por pedido.",
+  "known_business_notes": [
+    "La vista vw_olist_genbi_pedidos tiene 449 422 filas = 449 422 pedidos distintos (verificado en Athena, QG1).",
+    "441 600 pedidos tienen al menos una resena (tiene_resena = 1) y 448 666 tienen lineas (tiene_lineas = 1).",
+    "Un pedido puede tener varias resenas: n_resenas y n_resenas_bajas son conteos por pedido.",
+    "score_prom es el promedio de las resenas del pedido. review_score no es aditivo: nunca se suma.",
+    "Pedido con calificacion baja (pedido_bajo = 1): score_prom <= 2. Es la base del KPI-1, el KPI central del proyecto.",
+    "KPI-2 se mide por resena: SUM(n_resenas_bajas) / SUM(n_resenas).",
+    "La entrega tardia solo es evaluable en pedidos con resena y con fecha de entrega al cliente y fecha estimada disponibles (entrega_evaluable = 1).",
+    "La resena califica el pedido completo: no se puede atribuir la insatisfaccion a un producto. categoria_unica solo tiene nombre de categoria si el pedido tiene una sola categoria.",
+    "2016-2018 son datos reales de Olist; 2019-2025 son datos simulados (columna periodo_datos).",
+    "El datamart no contiene identificadores de cliente (ni customer_id ni customer_unique_id). Los compradores unicos no se pueden calcular.",
+    "Moneda: real brasileno (BRL, R$). Los resultados muestran asociaciones, no causas."
+  ]
+}

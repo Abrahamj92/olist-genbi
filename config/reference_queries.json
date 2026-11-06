@@ -1,0 +1,102 @@
+[
+  {
+    "id": "GQ01",
+    "level": "pedido",
+    "question": "¿Cuántos pedidos con reseña hay?",
+    "metric": "pedidos_con_resena",
+    "reference_sql": "SELECT COUNT(*) AS pedidos_con_resena FROM olist_master.v_resena_pedido",
+    "expected_value": 441600,
+    "expected_source": "Verificado en Athena (E1.7 y QG1)"
+  },
+  {
+    "id": "GQ02",
+    "level": "pedido",
+    "question": "¿Cuál es el porcentaje de pedidos insatisfechos?",
+    "metric": "kpi1_pct_pedidos_bajos",
+    "reference_sql": "SELECT 100.0 * COUNT_IF(score_prom <= 2) / COUNT(*) AS kpi1_pct FROM olist_master.v_resena_pedido",
+    "expected_value": 15.21,
+    "expected_source": "Verificado en Athena (QG3, redondeado a 2 decimales)"
+  },
+  {
+    "id": "GQ03",
+    "level": "pedido",
+    "question": "¿Cuál es la calificación promedio?",
+    "metric": "kpi3_calificacion_promedio",
+    "reference_sql": "SELECT AVG(score_prom) AS kpi3 FROM olist_master.v_resena_pedido",
+    "expected_value": 3.72,
+    "expected_source": "Verificado en Athena (QG3, redondeado a 2 decimales)"
+  },
+  {
+    "id": "GQ04",
+    "level": "resena",
+    "question": "¿Qué porcentaje de reseñas bajas tenemos?",
+    "metric": "kpi2_pct_resenas_bajas",
+    "reference_sql": "SELECT 100.0 * COUNT_IF(review_score <= 2) / COUNT(*) AS kpi2_pct FROM olist_master.fact_resenas",
+    "expected_value": 15.25,
+    "expected_source": "Verificado en Athena (QG3, redondeado a 2 decimales)"
+  },
+  {
+    "id": "GQ05",
+    "level": "resena",
+    "question": "¿Cuántas reseñas hay en total?",
+    "metric": "resenas",
+    "reference_sql": "SELECT COUNT(*) AS resenas FROM olist_master.fact_resenas",
+    "expected_value": 455721,
+    "expected_source": "Verificado en Athena (E1.4)"
+  },
+  {
+    "id": "GQ06",
+    "level": "pedido + periodo",
+    "question": "¿Cuál fue el porcentaje de pedidos insatisfechos en 2017?",
+    "metric": "kpi1_pct_pedidos_bajos",
+    "reference_sql": "SELECT 100.0 * COUNT_IF(p.score_prom <= 2) / COUNT(*) AS kpi1_pct FROM olist_master.v_resena_pedido p JOIN olist_master.dim_fecha d ON p.fecha_compra_key = d.fecha_key WHERE d.anio = 2017",
+    "expected_value": 14.41,
+    "expected_source": "Verificado en Athena 2026-11-06 (valor exacto 14.413830120320258)"
+  },
+  {
+    "id": "GQ07",
+    "level": "pedido + periodo",
+    "question": "¿Cuál fue la tasa de entrega tardía en 2025?",
+    "metric": "kpi5_tasa_entrega_tardia",
+    "reference_sql": "SELECT 100.0 * COUNT_IF(fe.fecha > fs.fecha) / COUNT(*) AS kpi5_pct FROM olist_master.v_resena_pedido p JOIN olist_master.dim_fecha fc ON p.fecha_compra_key = fc.fecha_key JOIN olist_master.dim_fecha fe ON p.fecha_entrega_cliente_key = fe.fecha_key JOIN olist_master.dim_fecha fs ON p.fecha_entrega_estimada_key = fs.fecha_key WHERE p.fecha_entrega_cliente_key <> -1 AND p.fecha_entrega_estimada_key <> -1 AND fc.anio = 2025",
+    "expected_value": 9.24,
+    "expected_source": "Verificado en Athena 2026-11-06 (valor exacto 9.238431548651793)"
+  },
+  {
+    "id": "GQ08",
+    "level": "linea agregada",
+    "question": "¿Cuánto vendimos en total?",
+    "metric": "ventas_productos",
+    "reference_sql": "SELECT SUM(price) AS ventas FROM olist_master.fact_lineas_pedido",
+    "expected_value": 86437222.1,
+    "expected_source": "Verificado en Athena 2026-11-06 (valor exacto 8.643722210001402E7)"
+  },
+  {
+    "id": "GQ09",
+    "level": "linea agregada",
+    "question": "¿Cuál es la proporción de flete sobre precio?",
+    "metric": "kpi8_flete_sobre_precio",
+    "reference_sql": "SELECT 100.0 * SUM(freight_value) / SUM(price) AS kpi8_pct FROM olist_master.fact_lineas_pedido",
+    "expected_value": 18.63,
+    "expected_source": "Verificado en Athena 2026-11-06 (valor exacto 18.626004652685403)"
+  },
+  {
+    "id": "GQ10",
+    "level": "pedido + composicion",
+    "question": "¿Cuál es el porcentaje de pedidos insatisfechos con 2 o más vendedores?",
+    "metric": "kpi1_pct_pedidos_bajos",
+    "reference_sql": "SELECT 100.0 * COUNT_IF(r.score_prom <= 2) / COUNT(*) AS kpi1_pct FROM olist_master.v_resena_pedido r JOIN (SELECT order_id, COUNT(DISTINCT vendedor_key) AS n_vendedores FROM olist_master.fact_lineas_pedido GROUP BY order_id) l ON r.order_id = l.order_id WHERE l.n_vendedores >= 2",
+    "expected_value": 15.77,
+    "expected_source": "Verificado en Athena 2026-11-06 (valor exacto 15.774161287389763)"
+  },
+  {
+    "id": "GQ11",
+    "level": "comprador (gobierno)",
+    "question": "¿Cuántos clientes únicos tenemos?",
+    "metric": "compradores_unicos",
+    "expect_unavailable": true,
+    "reference_sql": null,
+    "expected_value": "Metrica no disponible",
+    "expected_source": "Prueba de gobierno adicional: el resolver debe rechazarla sin llamar a Bedrock ni a Athena"
+  }
+]

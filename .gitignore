@@ -1,0 +1,93 @@
+# ==============================
+# Python
+# ==============================
+
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# Conda / Python environments
+.conda/
+conda-meta/
+
+# ==============================
+# Environment / Secrets
+# ==============================
+
+.env
+.env.*
+*.env
+
+# Local project configuration
+config/settings.json
+
+# AWS local credentials/config if copied into the project
+.aws/
+credentials
+# (Olist) se quitó la línea 'config': ocultaba toda la carpeta config/
+
+# ==============================
+# macOS
+# ==============================
+
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# ==============================
+# IDEs / Editors
+# ==============================
+
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# ==============================
+# Jupyter
+# ==============================
+
+.ipynb_checkpoints/
+
+# ==============================
+# Python packaging
+# ==============================
+
+build/
+dist/
+*.egg-info/
+.eggs/
+
+# ==============================
+# Testing / Coverage
+# ==============================
+
+.pytest_cache/
+.coverage
+htmlcov/
+
+# ==============================
+# Logs / Temporary files
+# ==============================
+
+*.log
+*.tmp
+*.temp
+
+# ==============================
+# Generated GenBI artifacts
+# (Olist) dataset_profile.json, semantic_layer_draft.json y
+# semantic_layer.json SÍ se versionan: son evidencia del proyecto.
+# ==============================
+
+# ==============================
+# Streamlit local config
+# ==============================
+
+.streamlit/secrets.toml

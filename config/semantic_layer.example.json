@@ -1,0 +1,430 @@
+{
+  "version": "0.1-propuesta",
+  "status": "PROPUESTA DEL GRUPO - pendiente de contrastar con semantic_layer_draft.json (Bedrock) y registrar la validacion humana en docs/human_validation.md",
+  "dataset": "Olist - Insatisfaccion del cliente por pedido",
+  "database": "olist_master",
+  "allowed_view": "vw_olist_genbi_pedidos",
+  "grain": "One row represents one order (order_id). Reviews and order lines are pre-aggregated per order.",
+  "business_context": {
+    "currency": "BRL",
+    "currency_symbol": "R$",
+    "locale": "pt-BR",
+    "language": "es",
+    "business_domain": "E-commerce marketplace Olist (Brasil), insatisfaccion del cliente 2016-2025",
+    "grain": "1 fila = 1 pedido",
+    "data_origin_note": "2016-2018 real; 2019-2025 simulado (columna periodo_datos)",
+    "causality_note": "Los resultados muestran asociaciones, no causas."
+  },
+  "dimensions": {
+    "anio": {
+      "column": "anio",
+      "label": "Ano de compra",
+      "description": "Ano de la fecha de compra del pedido (2016-2025).",
+      "synonyms": [
+        "ano",
+        "anio",
+        "year",
+        "ano de compra"
+      ]
+    },
+    "mes": {
+      "column": "anio_mes",
+      "label": "Mes de compra",
+      "description": "Mes de compra en formato YYYY-MM. Usar anio_mes para series temporales; mes (1-12) solo para estacionalidad.",
+      "synonyms": [
+        "mes",
+        "mensual",
+        "por mes",
+        "evolucion mensual"
+      ]
+    },
+    "periodo_datos": {
+      "column": "periodo_datos",
+      "label": "Origen de los datos",
+      "description": "Real 2016-2018 o Simulado 2019-2025.",
+      "synonyms": [
+        "datos reales",
+        "datos simulados",
+        "origen de los datos"
+      ]
+    },
+    "estado_pedido": {
+      "column": "estado_pedido",
+      "label": "Estado del pedido",
+      "description": "Ultimo estado registrado del pedido (no hay historial de estados). grupo_estado_pedido agrupa estados.",
+      "synonyms": [
+        "estado del pedido",
+        "status",
+        "situacion del pedido"
+      ]
+    },
+    "estado_cliente": {
+      "column": "estado_cliente",
+      "label": "Estado (UF) del cliente",
+      "description": "Estado brasileno de la direccion de entrega del pedido.",
+      "synonyms": [
+        "estado",
+        "uf",
+        "estado de destino"
+      ]
+    },
+    "region_cliente": {
+      "column": "region_cliente",
+      "label": "Region del cliente",
+      "description": "Region de Brasil de la direccion de entrega.",
+      "synonyms": [
+        "region",
+        "zona",
+        "macroregion"
+      ]
+    },
+    "cumplimiento_plazo": {
+      "column": "cumplimiento_plazo",
+      "label": "Cumplimiento del plazo (KPI-4)",
+      "description": "A tiempo, Tarde, No evaluable (sin fecha de entrega) o Sin resena.",
+      "synonyms": [
+        "a tiempo",
+        "tarde",
+        "plazo",
+        "cumplimiento de entrega",
+        "cumplimiento del plazo",
+        "cumplimiento",
+        "plazo de entrega"
+      ]
+    },
+    "grupo_vendedores": {
+      "column": "grupo_vendedores",
+      "label": "Vendedores por pedido",
+      "description": "'1' o '2 o mas' vendedores en el pedido; 'Sin lineas' si no tiene lineas.",
+      "synonyms": [
+        "vendedores",
+        "un vendedor",
+        "varios vendedores"
+      ]
+    },
+    "rango_flete": {
+      "column": "rango_flete",
+      "label": "Rango flete / precio (KPI-8 por pedido)",
+      "description": "1. <10%, 2. 10-25%, 3. 25-50%, 4. >=50%, Precio cero o Sin lineas.",
+      "synonyms": [
+        "rango de flete",
+        "flete relativo"
+      ]
+    },
+    "categoria_unica": {
+      "column": "categoria_unica",
+      "label": "Categoria (solo pedidos de una categoria)",
+      "description": "Nombre de la categoria solo si el pedido tiene una sola; 'Varias categorias', 'Sin categoria' o 'Sin lineas' en otro caso. No atribuye la insatisfaccion a un producto.",
+      "synonyms": [
+        "categoria",
+        "categoria de producto",
+        "tipo de producto"
+      ]
+    },
+    "tipo_pedido_categoria": {
+      "column": "tipo_pedido_categoria",
+      "label": "Tipo de pedido por categoria",
+      "description": "Una categoria, Varias categorias o Sin lineas.",
+      "synonyms": [
+        "pedidos multicategoria",
+        "una categoria",
+        "varias categorias"
+      ]
+    }
+  },
+  "measures": {
+    "pedidos": {
+      "label": "Pedidos",
+      "sql": "COUNT(DISTINCT order_id)",
+      "level": "pedido",
+      "description": "Numero de pedidos distintos.",
+      "synonyms": [
+        "pedidos",
+        "numero de pedidos",
+        "cantidad de pedidos",
+        "total de pedidos",
+        "ordenes",
+        "orders"
+      ]
+    },
+    "pedidos_con_resena": {
+      "label": "Pedidos con resena",
+      "sql": "SUM(tiene_resena)",
+      "level": "pedido",
+      "description": "Pedidos con al menos una resena. Denominador de KPI-1.",
+      "synonyms": [
+        "pedidos con resena",
+        "pedidos con resenas",
+        "pedidos resenados",
+        "pedidos calificados"
+      ]
+    },
+    "resenas": {
+      "label": "Resenas",
+      "sql": "SUM(n_resenas)",
+      "level": "resena",
+      "description": "Numero de resenas. Denominador de KPI-2.",
+      "synonyms": [
+        "resenas",
+        "numero de resenas",
+        "cantidad de resenas",
+        "total de resenas",
+        "reviews",
+        "opiniones"
+      ]
+    },
+    "kpi1_pct_pedidos_bajos": {
+      "label": "KPI-1 % de pedidos con calificacion baja",
+      "sql": "100.0 * SUM(pedido_bajo) / NULLIF(SUM(tiene_resena), 0)",
+      "level": "pedido",
+      "description": "Pedidos cuyo promedio de resenas es <= 2 sobre pedidos con resena x 100. KPI central del proyecto.",
+      "synonyms": [
+        "pedidos con calificacion baja",
+        "porcentaje de pedidos con calificacion baja",
+        "pedidos insatisfechos",
+        "porcentaje de pedidos insatisfechos",
+        "tasa de insatisfaccion por pedido",
+        "pedidos con mala calificacion",
+        "kpi 1",
+        "kpi1"
+      ]
+    },
+    "kpi2_pct_resenas_bajas": {
+      "label": "KPI-2 % de resenas bajas",
+      "sql": "100.0 * SUM(n_resenas_bajas) / NULLIF(SUM(n_resenas), 0)",
+      "level": "resena",
+      "description": "Resenas con review_score <= 2 sobre el total de resenas x 100.",
+      "synonyms": [
+        "resenas bajas",
+        "porcentaje de resenas bajas",
+        "resenas negativas",
+        "malas resenas",
+        "kpi 2",
+        "kpi2"
+      ]
+    },
+    "kpi3_calificacion_promedio": {
+      "label": "KPI-3 Calificacion promedio por pedido",
+      "sql": "AVG(score_prom)",
+      "level": "pedido",
+      "description": "Promedio de score_prom (promedio de resenas de cada pedido). Ignora pedidos sin resena.",
+      "synonyms": [
+        "calificacion promedio",
+        "promedio de calificacion",
+        "puntaje promedio",
+        "nota promedio",
+        "estrellas promedio",
+        "kpi 3",
+        "kpi3"
+      ]
+    },
+    "kpi5_tasa_entrega_tardia": {
+      "label": "KPI-5 Tasa de entrega tardia",
+      "sql": "100.0 * SUM(entrega_tarde) / NULLIF(SUM(entrega_evaluable), 0)",
+      "level": "pedido",
+      "description": "Pedidos entregados despues de la fecha estimada sobre pedidos con ambas fechas x 100.",
+      "synonyms": [
+        "tasa de entrega tardia",
+        "entregas tardias",
+        "entrega tardia",
+        "pedidos tardios",
+        "porcentaje de retrasos",
+        "kpi 5",
+        "kpi5"
+      ]
+    },
+    "kpi6_articulos_por_pedido": {
+      "label": "KPI-6 Articulos por pedido",
+      "sql": "CAST(SUM(n_items) AS double) / NULLIF(SUM(tiene_lineas), 0)",
+      "level": "pedido",
+      "description": "Promedio de articulos por pedido con lineas.",
+      "synonyms": [
+        "articulos por pedido",
+        "items por pedido",
+        "productos por pedido",
+        "kpi 6",
+        "kpi6"
+      ]
+    },
+    "kpi7_vendedores_por_pedido": {
+      "label": "KPI-7 Vendedores por pedido",
+      "sql": "CAST(SUM(n_vendedores) AS double) / NULLIF(SUM(tiene_lineas), 0)",
+      "level": "pedido",
+      "description": "Promedio de vendedores distintos por pedido con lineas. Para comparar 1 vs 2 o mas usar la dimension grupo_vendedores.",
+      "synonyms": [
+        "vendedores por pedido",
+        "kpi 7",
+        "kpi7"
+      ]
+    },
+    "kpi8_flete_sobre_precio": {
+      "label": "KPI-8 Flete / precio (global)",
+      "sql": "100.0 * SUM(flete) / NULLIF(SUM(precio), 0)",
+      "level": "pedido",
+      "description": "Proporcion global del flete respecto del precio de los productos x 100 (SUM/SUM, no promedio de ratios).",
+      "synonyms": [
+        "flete sobre precio",
+        "proporcion de flete",
+        "relacion flete precio",
+        "peso del flete",
+        "kpi 8",
+        "kpi8"
+      ]
+    },
+    "ventas_productos": {
+      "label": "Ventas de productos (R$)",
+      "sql": "SUM(precio)",
+      "level": "linea agregada a pedido",
+      "description": "Suma del precio de los productos. No incluye flete.",
+      "synonyms": [
+        "ingresos",
+        "facturacion",
+        "monto de productos",
+        "valor de productos",
+        "ventas de productos"
+      ]
+    },
+    "flete_total": {
+      "label": "Flete total (R$)",
+      "sql": "SUM(flete)",
+      "level": "linea agregada a pedido",
+      "description": "Suma del flete cobrado.",
+      "synonyms": [
+        "flete total",
+        "flete",
+        "fletes",
+        "costo de envio",
+        "flete cobrado"
+      ]
+    }
+  },
+  "ambiguities": {
+    "insatisfaccion": {
+      "terms": [
+        "insatisfaccion",
+        "insatisfecho",
+        "insatisfechos",
+        "insatisfecha",
+        "insatisfechas"
+      ],
+      "approved_default": "kpi1_pct_pedidos_bajos",
+      "reason": "El proyecto mide la insatisfaccion por pedido (KPI-1). KPI-2 solo si el usuario pide resenas.",
+      "alternatives": [
+        "kpi2_pct_resenas_bajas"
+      ]
+    },
+    "calificacion": {
+      "terms": [
+        "calificacion",
+        "calificaciones",
+        "nota",
+        "puntaje",
+        "estrellas",
+        "satisfaccion"
+      ],
+      "approved_default": "kpi3_calificacion_promedio",
+      "reason": "Calificacion sin especificar = promedio por pedido (KPI-3), nunca promedio de resenas sobre lineas.",
+      "alternatives": [
+        "kpi1_pct_pedidos_bajos"
+      ]
+    },
+    "calificacion baja": {
+      "terms": [
+        "calificacion baja",
+        "calificaciones bajas",
+        "mala calificacion",
+        "malas calificaciones"
+      ],
+      "approved_default": "kpi1_pct_pedidos_bajos",
+      "reason": "Puede medirse por pedido (KPI-1) o por resena (KPI-2); por defecto, por pedido.",
+      "alternatives": [
+        "kpi2_pct_resenas_bajas"
+      ]
+    },
+    "ventas": {
+      "terms": [
+        "ventas",
+        "venta",
+        "vendimos",
+        "vendio",
+        "vendido"
+      ],
+      "approved_default": "ventas_productos",
+      "reason": "Ventas = SUM(precio) sin flete, salvo que el usuario pida incluir el flete.",
+      "alternatives": [
+        "pedidos"
+      ]
+    },
+    "peor o mejor": {
+      "terms": [
+        "peor",
+        "peores",
+        "mejor",
+        "mejores",
+        "mas problematica",
+        "mas problematico",
+        "desempeno"
+      ],
+      "approved_default": "kpi1_pct_pedidos_bajos",
+      "reason": "Peor = mayor KPI-1 (ordenar DESC); mejor = menor KPI-1 (ordenar ASC).",
+      "alternatives": [
+        "kpi3_calificacion_promedio"
+      ]
+    },
+    "retraso": {
+      "terms": [
+        "retraso",
+        "retrasos",
+        "demora",
+        "demoras",
+        "tardanza"
+      ],
+      "approved_default": "kpi5_tasa_entrega_tardia",
+      "reason": "Retraso = entrega al cliente posterior a la fecha estimada (KPI-5). No se miden dias de retraso.",
+      "alternatives": []
+    }
+  },
+  "unavailable_metrics": {
+    "compradores_unicos": {
+      "label": "Compradores unicos / clientes",
+      "terms": [
+        "cliente",
+        "clientes",
+        "comprador",
+        "compradores",
+        "customer",
+        "customers",
+        "consumidor",
+        "consumidores",
+        "usuarios",
+        "recompra",
+        "recompras",
+        "clientes unicos",
+        "compradores unicos",
+        "clientes recurrentes"
+      ],
+      "reason": "El datamart olist_master no contiene identificadores de cliente: ni customer_id ni customer_unique_id (verificado en Athena, E1.3). customer_unique_id solo existe en olist_raw.customers y no se usa para no depender de RAW.",
+      "message": "La metrica de clientes o compradores unicos no esta disponible en el datamart. El modelo mide la insatisfaccion por pedido y por resena.",
+      "alternatives": [
+        "Porcentaje de pedidos insatisfechos (KPI-1)",
+        "Porcentaje de resenas bajas (KPI-2)",
+        "Numero de pedidos"
+      ],
+      "future_improvement": "Incorporar una dim_cliente con customer_unique_id mediante el pipeline incremental (fuera del alcance de esta entrega)."
+    }
+  },
+  "business_rules": [
+    "Pedidos: usar siempre COUNT(DISTINCT order_id).",
+    "Porcentajes y ratios: calcular como SUM/SUM; nunca promediar porcentajes.",
+    "review_score no es aditivo: nunca sumar calificaciones; usar score_prom por pedido.",
+    "KPI-1 y KPI-3 usan solo pedidos con resena (tiene_resena = 1); KPI-2 usa el total de resenas (n_resenas).",
+    "Entrega tardia: solo pedidos con entrega_evaluable = 1.",
+    "Ventas no incluyen flete salvo que el usuario lo pida explicitamente.",
+    "Los anos y meses se refieren a la fecha de compra: filtrar con las columnas anio y anio_mes, nunca con funciones de fecha.",
+    "Categoria: solo atribuible a pedidos de una categoria (categoria_unica). No atribuir la insatisfaccion a un producto.",
+    "Reportar por periodo o indicar periodo_datos: 2019-2025 son datos simulados.",
+    "No calcular clientes ni compradores: no existen en el datamart.",
+    "Never use SELECT *. Query only vw_olist_genbi_pedidos.",
+    "Los resultados muestran asociaciones, no causas."
+  ]
+}
