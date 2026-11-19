@@ -1,0 +1,9 @@
+{
+  "title": "Olist | Logística y flete",
+  "components": [
+    {"id": "late_total", "type": "kpi", "metric": "kpi5_tasa_entrega_tardia", "title": "Entrega tardía (KPI-5)"},
+    {"id": "freight_ratio", "type": "kpi", "metric": "kpi8_flete_sobre_precio", "title": "Flete sobre precio (KPI-8)"},
+    {"id": "kpi1_freight_range", "type": "bar", "metric": "kpi1_pct_pedidos_bajos", "dimension": "rango_flete", "title": "KPI-1 por rango de flete"},
+    {"id": "late_region", "type": "table", "metric": "kpi5_tasa_entrega_tardia", "dimension": "region_cliente", "title": "Entrega tardía por región"}
+  ]
+}

@@ -1,0 +1,57 @@
+{
+  "schema_version": "1.0",
+  "title": "Dashboard Logístico 2025",
+  "description": "Análisis de la satisfacción del cliente en Olist para el año 2025.",
+  "filters": [
+    {
+      "dimension": "anio",
+      "operator": "=",
+      "value": 2025
+    }
+  ],
+  "components": [
+    {
+      "id": "k1",
+      "type": "kpi",
+      "title": "Tasa de entrega tardía",
+      "metric": "kpi5_tasa_entrega_tardia",
+      "dimensions": [],
+      "visualization": "number",
+      "filters": [],
+      "sort": null,
+      "limit": null
+    },
+    {
+      "id": "c1",
+      "type": "chart",
+      "title": "Insatisfacción según cumplimiento del plazo",
+      "metric": "cumplimiento_plazo",
+      "dimensions": [
+        "cumplimiento_plazo"
+      ],
+      "visualization": "bar",
+      "filters": [],
+      "sort": "desc",
+      "limit": null
+    },
+    {
+      "id": "c2",
+      "type": "chart",
+      "title": "Flete sobre precio",
+      "metric": "kpi8_flete_sobre_precio",
+      "dimensions": [
+        "rango_flete"
+      ],
+      "visualization": "line",
+      "filters": [],
+      "sort": null,
+      "limit": null
+    }
+  ],
+  "rejected_requests": [
+    {
+      "request": "Compradores únicos / clientes",
+      "reason": "No disponible en el catálogo"
+    }
+  ]
+}

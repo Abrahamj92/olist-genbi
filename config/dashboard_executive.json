@@ -1,0 +1,12 @@
+{
+  "title": "Olist | Insatisfacción del cliente — Vista ejecutiva",
+  "components": [
+    {"id": "kpi1_total", "type": "kpi", "metric": "kpi1_pct_pedidos_bajos", "title": "% pedidos insatisfechos (KPI-1)"},
+    {"id": "kpi3_total", "type": "kpi", "metric": "kpi3_calificacion_promedio", "title": "Calificación promedio (KPI-3)"},
+    {"id": "kpi5_total", "type": "kpi", "metric": "kpi5_tasa_entrega_tardia", "title": "Entrega tardía (KPI-5)"},
+    {"id": "orders_total", "type": "kpi", "metric": "pedidos", "title": "Pedidos"},
+    {"id": "kpi1_yearly", "type": "line", "metric": "kpi1_pct_pedidos_bajos", "dimension": "anio", "title": "Evolución anual del KPI-1"},
+    {"id": "kpi1_deadline", "type": "bar", "metric": "kpi1_pct_pedidos_bajos", "dimension": "cumplimiento_plazo", "title": "KPI-1 según cumplimiento del plazo"},
+    {"id": "kpi1_region", "type": "bar", "metric": "kpi1_pct_pedidos_bajos", "dimension": "region_cliente", "title": "KPI-1 por región"}
+  ]
+}

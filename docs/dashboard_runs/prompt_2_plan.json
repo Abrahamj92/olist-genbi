@@ -1,0 +1,286 @@
+{
+  "final_spec": {
+    "schema_version": "1.0",
+    "title": "Dashboard de Insatisfacción Logística 2025",
+    "description": "Análisis de la insatisfacción del cliente en Olist para el año 2025, enfocado en la tasa de entrega tardía, flete sobre precio y ventas.",
+    "filters": [
+      {
+        "dimension": "anio",
+        "operator": "=",
+        "value": 2025
+      }
+    ],
+    "components": [
+      {
+        "id": "k1",
+        "type": "kpi",
+        "title": "Tasa de Entrega Tardía",
+        "metric": "kpi5_tasa_entrega_tardia",
+        "dimensions": [],
+        "visualization": "number",
+        "filters": [],
+        "sort": null,
+        "limit": null
+      },
+      {
+        "id": "k2",
+        "type": "kpi",
+        "title": "Flete sobre Precio",
+        "metric": "kpi8_flete_sobre_precio",
+        "dimensions": [],
+        "visualization": "number",
+        "filters": [],
+        "sort": null,
+        "limit": null
+      },
+      {
+        "id": "c1",
+        "type": "chart",
+        "title": "Ventas de Productos",
+        "metric": "ventas_productos",
+        "dimensions": [
+          "anio"
+        ],
+        "visualization": "line",
+        "filters": [],
+        "sort": null,
+        "limit": null
+      },
+      {
+        "id": "c2",
+        "type": "chart",
+        "title": "Insatisfacción por Cumplimiento del Plazo",
+        "metric": "kpi1_pct_pedidos_bajos",
+        "dimensions": [
+          "cumplimiento_plazo"
+        ],
+        "visualization": "bar",
+        "filters": [],
+        "sort": "desc",
+        "limit": 10
+      },
+      {
+        "id": "auto_c_rango_flete",
+        "type": "chart",
+        "title": "KPI-1 % de pedidos con calificacion baja por Rango flete / precio (KPI-8 por pedido)",
+        "metric": "kpi1_pct_pedidos_bajos",
+        "dimensions": [
+          "rango_flete"
+        ],
+        "visualization": "bar",
+        "filters": [],
+        "sort": "desc",
+        "limit": 10
+      }
+    ],
+    "rejected_requests": [
+      {
+        "request": "Compradores únicos / clientes",
+        "reason": "No disponible en el catálogo"
+      }
+    ]
+  },
+  "attempts": [
+    {
+      "attempt": 1,
+      "spec": {
+        "schema_version": "1.0",
+        "title": "Dashboard de Insatisfacción Logística 2025",
+        "description": "Análisis de la insatisfacción del cliente en Olist para el año 2025, enfocado en la tasa de entrega tardía, flete sobre precio y ventas.",
+        "filters": [
+          {
+            "dimension": "anio",
+            "operator": "=",
+            "value": 2025
+          }
+        ],
+        "components": [
+          {
+            "id": "k1",
+            "type": "kpi",
+            "title": "Tasa de Entrega Tardía",
+            "metric": "kpi5_tasa_entrega_tardia",
+            "dimensions": [],
+            "visualization": "number",
+            "filters": [],
+            "sort": null,
+            "limit": null
+          },
+          {
+            "id": "k2",
+            "type": "kpi",
+            "title": "Flete sobre Precio",
+            "metric": "kpi8_flete_sobre_precio",
+            "dimensions": [],
+            "visualization": "number",
+            "filters": [],
+            "sort": null,
+            "limit": null
+          },
+          {
+            "id": "c1",
+            "type": "chart",
+            "title": "Ventas de Productos",
+            "metric": "ventas_productos",
+            "dimensions": [
+              "anio"
+            ],
+            "visualization": "line",
+            "filters": [],
+            "sort": null,
+            "limit": null
+          },
+          {
+            "id": "c2",
+            "type": "chart",
+            "title": "Insatisfacción por Cumplimiento del Plazo",
+            "metric": "kpi1_pct_pedidos_bajos",
+            "dimensions": [
+              "cumplimiento_plazo"
+            ],
+            "visualization": "bar",
+            "filters": [],
+            "sort": "desc",
+            "limit": 10
+          }
+        ],
+        "rejected_requests": [
+          {
+            "request": "Compradores únicos / clientes",
+            "reason": "No disponible en el catálogo"
+          }
+        ]
+      },
+      "errors": [],
+      "missing": []
+    }
+  ],
+  "rejected": [
+    {
+      "id": null,
+      "title": "Compradores únicos / clientes",
+      "reason": "No disponible en el catálogo",
+      "kind": "planner"
+    },
+    {
+      "id": "c1",
+      "title": "Ventas de Productos",
+      "kind": "corrected",
+      "reason": "Corregido: con un solo año filtrado, la evolución se muestra por mes."
+    },
+    {
+      "id": null,
+      "title": "Backend",
+      "reason": "Completado por reglas: gráfico por 'Rango flete / precio (KPI-8 por pedido)' pedido en el prompt.",
+      "kind": "corrected"
+    }
+  ],
+  "components": [
+    {
+      "id": "k1",
+      "type": "kpi",
+      "title": "Tasa de Entrega Tardía",
+      "metric": "kpi5_tasa_entrega_tardia",
+      "dimensions": [],
+      "visualization": "number",
+      "filters": [],
+      "sort": null,
+      "limit": null,
+      "metric_label": "KPI-5 Tasa de entrega tardia",
+      "sql": "SELECT 100.0 * SUM(entrega_tarde) / NULLIF(SUM(entrega_evaluable), 0) AS kpi5_tasa_entrega_tardia\nFROM vw_olist_genbi_pedidos\nWHERE anio = 2025",
+      "athena": {
+        "query_execution_id": "55bc8213-02df-492a-a61b-a8a1639c029e",
+        "engine_execution_ms": 1841,
+        "total_execution_ms": 2028,
+        "data_scanned_bytes": 50903868
+      },
+      "error": null
+    },
+    {
+      "id": "k2",
+      "type": "kpi",
+      "title": "Flete sobre Precio",
+      "metric": "kpi8_flete_sobre_precio",
+      "dimensions": [],
+      "visualization": "number",
+      "filters": [],
+      "sort": null,
+      "limit": null,
+      "metric_label": "KPI-8 Flete / precio (global)",
+      "sql": "SELECT 100.0 * SUM(flete) / NULLIF(SUM(precio), 0) AS kpi8_flete_sobre_precio\nFROM vw_olist_genbi_pedidos\nWHERE anio = 2025",
+      "athena": {
+        "query_execution_id": "54aad3df-7cc0-44b9-8f6f-28f9a4a3b049",
+        "engine_execution_ms": 2302,
+        "total_execution_ms": 2469,
+        "data_scanned_bytes": 53159224
+      },
+      "error": null
+    },
+    {
+      "id": "c1",
+      "type": "chart",
+      "title": "Ventas de Productos",
+      "metric": "ventas_productos",
+      "dimensions": [
+        "mes"
+      ],
+      "visualization": "line",
+      "filters": [],
+      "sort": null,
+      "limit": null,
+      "metric_label": "Ventas de productos (R$)",
+      "sql": "SELECT anio_mes, SUM(precio) AS ventas_productos\nFROM vw_olist_genbi_pedidos\nWHERE anio = 2025\nGROUP BY anio_mes\nORDER BY anio_mes ASC",
+      "athena": {
+        "query_execution_id": "8dd1d3df-7e1d-42cc-a1dd-67673f5924ab",
+        "engine_execution_ms": 2094,
+        "total_execution_ms": 2282,
+        "data_scanned_bytes": 52132126
+      },
+      "error": null
+    },
+    {
+      "id": "c2",
+      "type": "chart",
+      "title": "Insatisfacción por Cumplimiento del Plazo",
+      "metric": "kpi1_pct_pedidos_bajos",
+      "dimensions": [
+        "cumplimiento_plazo"
+      ],
+      "visualization": "bar",
+      "filters": [],
+      "sort": "desc",
+      "limit": 10,
+      "metric_label": "KPI-1 % de pedidos con calificacion baja",
+      "sql": "SELECT cumplimiento_plazo, 100.0 * SUM(pedido_bajo) / NULLIF(SUM(tiene_resena), 0) AS kpi1_pct_pedidos_bajos\nFROM vw_olist_genbi_pedidos\nWHERE anio = 2025\nGROUP BY cumplimiento_plazo\nORDER BY kpi1_pct_pedidos_bajos DESC\nLIMIT 10",
+      "athena": {
+        "query_execution_id": "9e6fc089-0194-44e7-9116-64dea7dd70d8",
+        "engine_execution_ms": 1996,
+        "total_execution_ms": 2180,
+        "data_scanned_bytes": 51040066
+      },
+      "error": null
+    },
+    {
+      "id": "auto_c_rango_flete",
+      "type": "chart",
+      "title": "KPI-1 % de pedidos con calificacion baja por Rango flete / precio (KPI-8 por pedido)",
+      "metric": "kpi1_pct_pedidos_bajos",
+      "dimensions": [
+        "rango_flete"
+      ],
+      "visualization": "bar",
+      "filters": [],
+      "sort": "desc",
+      "limit": 10,
+      "metric_label": "KPI-1 % de pedidos con calificacion baja",
+      "sql": "SELECT rango_flete, 100.0 * SUM(pedido_bajo) / NULLIF(SUM(tiene_resena), 0) AS kpi1_pct_pedidos_bajos\nFROM vw_olist_genbi_pedidos\nWHERE anio = 2025\nGROUP BY rango_flete\nORDER BY kpi1_pct_pedidos_bajos DESC\nLIMIT 10",
+      "athena": {
+        "query_execution_id": "372a4f44-f2a2-4b62-971b-a1cb7ed03f53",
+        "engine_execution_ms": 2067,
+        "total_execution_ms": 2235,
+        "data_scanned_bytes": 53295422
+      },
+      "error": null
+    }
+  ]
+}

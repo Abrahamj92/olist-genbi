@@ -1,0 +1,272 @@
+{
+  "final_spec": {
+    "schema_version": "1.0",
+    "title": "Dashboard Logístico 2025",
+    "description": "Análisis de la insatisfacción del cliente en Olist para el año 2025, enfocado en la tasa de entrega tardía, flete sobre precio y ventas.",
+    "filters": [
+      {
+        "dimension": "anio",
+        "operator": "=",
+        "value": 2025
+      }
+    ],
+    "components": [
+      {
+        "id": "k1",
+        "type": "kpi",
+        "title": "Tasa de Entrega Tardía",
+        "metric": "kpi5_tasa_entrega_tardia",
+        "dimensions": [],
+        "visualization": "number",
+        "filters": [],
+        "sort": null,
+        "limit": null
+      },
+      {
+        "id": "c2",
+        "type": "chart",
+        "title": "Flete sobre Precio",
+        "metric": "kpi8_flete_sobre_precio",
+        "dimensions": [],
+        "visualization": "bar",
+        "filters": [],
+        "sort": "desc",
+        "limit": 10
+      },
+      {
+        "id": "c3",
+        "type": "chart",
+        "title": "Ventas de Productos",
+        "metric": "ventas_productos",
+        "dimensions": [
+          "anio"
+        ],
+        "visualization": "line",
+        "filters": [],
+        "sort": null,
+        "limit": null
+      }
+    ],
+    "rejected_requests": [
+      {
+        "request": "Insatisfacción según el cumplimiento del plazo",
+        "reason": "Métrica ausente en la capa semántica ('cumplimiento_plazo'): sin definición aprobada."
+      }
+    ]
+  },
+  "attempts": [
+    {
+      "attempt": 1,
+      "spec": {
+        "schema_version": "1.0",
+        "title": "Dashboard de Insatisfacción Logística 2025",
+        "description": "Análisis de la insatisfacción del cliente en Olist para el año 2025, enfocado en la tasa de entrega tardía, flete sobre precio y ventas.",
+        "filters": [
+          {
+            "dimension": "anio",
+            "operator": "=",
+            "value": 2025
+          }
+        ],
+        "components": [
+          {
+            "id": "k1",
+            "type": "kpi",
+            "title": "Tasa de Entrega Tardía",
+            "metric": "kpi5_tasa_entrega_tardia",
+            "dimensions": [],
+            "visualization": "number",
+            "filters": [],
+            "sort": null,
+            "limit": null
+          },
+          {
+            "id": "c1",
+            "type": "chart",
+            "title": "Insatisfacción por Cumplimiento del Plazo",
+            "metric": "cumplimiento_plazo",
+            "dimensions": [],
+            "visualization": "bar",
+            "filters": [],
+            "sort": "desc",
+            "limit": 10
+          },
+          {
+            "id": "c2",
+            "type": "chart",
+            "title": "Flete sobre Precio",
+            "metric": "kpi8_flete_sobre_precio",
+            "dimensions": [
+              "rango_flete"
+            ],
+            "visualization": "bar",
+            "filters": [],
+            "sort": "desc",
+            "limit": 10
+          },
+          {
+            "id": "c3",
+            "type": "chart",
+            "title": "Ventas de Productos",
+            "metric": "ventas_productos",
+            "dimensions": [
+              "anio"
+            ],
+            "visualization": "line",
+            "filters": [],
+            "sort": null,
+            "limit": null
+          }
+        ],
+        "rejected_requests": [
+          {
+            "request": "Compradores únicos / clientes",
+            "reason": "No disponible en el catálogo"
+          }
+        ]
+      },
+      "errors": [
+        {
+          "id": "c1",
+          "title": "Insatisfacción por Cumplimiento del Plazo",
+          "reason": "Métrica ausente en la capa semántica ('cumplimiento_plazo'): sin definición aprobada.",
+          "kind": "semantic"
+        }
+      ],
+      "missing": []
+    },
+    {
+      "attempt": 2,
+      "spec": {
+        "schema_version": "1.0",
+        "title": "Dashboard Logístico 2025",
+        "description": "Análisis de la insatisfacción del cliente en Olist para el año 2025, enfocado en la tasa de entrega tardía, flete sobre precio y ventas.",
+        "filters": [
+          {
+            "dimension": "anio",
+            "operator": "=",
+            "value": 2025
+          }
+        ],
+        "components": [
+          {
+            "id": "k1",
+            "type": "kpi",
+            "title": "Tasa de Entrega Tardía",
+            "metric": "kpi5_tasa_entrega_tardia",
+            "dimensions": [],
+            "visualization": "number",
+            "filters": [],
+            "sort": null,
+            "limit": null
+          },
+          {
+            "id": "c2",
+            "type": "chart",
+            "title": "Flete sobre Precio",
+            "metric": "kpi8_flete_sobre_precio",
+            "dimensions": [],
+            "visualization": "bar",
+            "filters": [],
+            "sort": "desc",
+            "limit": 10
+          },
+          {
+            "id": "c3",
+            "type": "chart",
+            "title": "Ventas de Productos",
+            "metric": "ventas_productos",
+            "dimensions": [
+              "anio"
+            ],
+            "visualization": "line",
+            "filters": [],
+            "sort": null,
+            "limit": null
+          }
+        ],
+        "rejected_requests": [
+          {
+            "request": "Insatisfacción según el cumplimiento del plazo",
+            "reason": "Métrica ausente en la capa semántica ('cumplimiento_plazo'): sin definición aprobada."
+          }
+        ]
+      },
+      "errors": [
+        {
+          "id": "c2",
+          "title": "Flete sobre Precio",
+          "reason": "Un gráfico de barras necesita exactamente una dimensión.",
+          "kind": "semantic"
+        }
+      ],
+      "missing": [
+        "kpi8_flete_sobre_precio"
+      ]
+    }
+  ],
+  "rejected": [
+    {
+      "id": null,
+      "title": "Insatisfacción según el cumplimiento del plazo",
+      "reason": "Métrica ausente en la capa semántica ('cumplimiento_plazo'): sin definición aprobada.",
+      "kind": "planner"
+    },
+    {
+      "id": "c2",
+      "title": "Flete sobre Precio",
+      "reason": "Un gráfico de barras necesita exactamente una dimensión.",
+      "kind": "semantic"
+    },
+    {
+      "id": "c3",
+      "title": "Ventas de Productos",
+      "kind": "corrected",
+      "reason": "Corregido: con un solo año filtrado, la evolución se muestra por mes."
+    }
+  ],
+  "components": [
+    {
+      "id": "k1",
+      "type": "kpi",
+      "title": "Tasa de Entrega Tardía",
+      "metric": "kpi5_tasa_entrega_tardia",
+      "dimensions": [],
+      "visualization": "number",
+      "filters": [],
+      "sort": null,
+      "limit": null,
+      "metric_label": "KPI-5 Tasa de entrega tardia",
+      "sql": "SELECT 100.0 * SUM(entrega_tarde) / NULLIF(SUM(entrega_evaluable), 0) AS kpi5_tasa_entrega_tardia\nFROM vw_olist_genbi_pedidos\nWHERE anio = 2025",
+      "athena": {
+        "query_execution_id": "d1194458-d4ef-4c10-80d0-63a1946289cc",
+        "engine_execution_ms": 1860,
+        "total_execution_ms": 2015,
+        "data_scanned_bytes": 50903868
+      },
+      "error": null
+    },
+    {
+      "id": "c3",
+      "type": "chart",
+      "title": "Ventas de Productos",
+      "metric": "ventas_productos",
+      "dimensions": [
+        "mes"
+      ],
+      "visualization": "line",
+      "filters": [],
+      "sort": null,
+      "limit": null,
+      "metric_label": "Ventas de productos (R$)",
+      "sql": "SELECT anio_mes, SUM(precio) AS ventas_productos\nFROM vw_olist_genbi_pedidos\nWHERE anio = 2025\nGROUP BY anio_mes\nORDER BY anio_mes ASC",
+      "athena": {
+        "query_execution_id": "a9bdd498-02c9-479f-9d8a-f3a4a0fe5f67",
+        "engine_execution_ms": 2083,
+        "total_execution_ms": 2258,
+        "data_scanned_bytes": 52132126
+      },
+      "error": null
+    }
+  ]
+}

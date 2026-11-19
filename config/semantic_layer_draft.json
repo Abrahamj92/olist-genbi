@@ -1,0 +1,155 @@
+{
+  "dataset": {
+    "name": "Olist - Insatisfaccion del cliente por pedido",
+    "business_domain": "E-commerce marketplace (Brasil). Analisis de los aspectos de la gestion de pedidos asociados con la insatisfaccion del cliente, 2016-2025.",
+    "database": "olist_master",
+    "allowed_view": "vw_olist_genbi_pedidos",
+    "grain": "Una fila representa un pedido (order_id) del datamart olist_master. Incluye pedidos con resena, con lineas o con ambas. Las resenas y las lineas ya estan agregadas por pedido."
+  },
+  "dimensions": [
+    {
+      "name": "order_id",
+      "label": "Order ID"
+    },
+    {
+      "name": "fecha_compra",
+      "label": "Purchase Date"
+    },
+    {
+      "name": "anio",
+      "label": "Year"
+    },
+    {
+      "name": "mes",
+      "label": "Month"
+    },
+    {
+      "name": "nombre_mes",
+      "label": "Month Name"
+    },
+    {
+      "name": "trimestre",
+      "label": "Quarter"
+    },
+    {
+      "name": "anio_mes",
+      "label": "Year Month"
+    },
+    {
+      "name": "periodo_datos",
+      "label": "Data Period"
+    },
+    {
+      "name": "codigo_estado_pedido",
+      "label": "Order State Code"
+    },
+    {
+      "name": "estado_pedido",
+      "label": "Order State"
+    },
+    {
+      "name": "grupo_estado_pedido",
+      "label": "Order State Group"
+    },
+    {
+      "name": "estado_cliente",
+      "label": "Client State"
+    },
+    {
+      "name": "ciudad_cliente",
+      "label": "Client City"
+    },
+    {
+      "name": "region_cliente",
+      "label": "Client Region"
+    },
+    {
+      "name": "tiene_resena",
+      "label": "Has Review"
+    },
+    {
+      "name": "tiene_lineas",
+      "label": "Has Order Lines"
+    },
+    {
+      "name": "n_categorias",
+      "label": "Number of Categories"
+    },
+    {
+      "name": "categoria_unica",
+      "label": "Unique Category"
+    }
+  ],
+  "candidate_measures": [
+    {
+      "name": "n_resenas",
+      "label": "Number of Reviews",
+      "suggested_aggregation": "SUM"
+    },
+    {
+      "name": "n_resenas_bajas",
+      "label": "Number of Low Reviews",
+      "suggested_aggregation": "SUM"
+    },
+    {
+      "name": "precio",
+      "label": "Order Price",
+      "suggested_aggregation": "SUM"
+    },
+    {
+      "name": "flete",
+      "label": "Shipping Cost",
+      "suggested_aggregation": "SUM"
+    },
+    {
+      "name": "n_items",
+      "label": "Number of Items",
+      "suggested_aggregation": "SUM"
+    },
+    {
+      "name": "n_vendedores",
+      "label": "Number of Sellers",
+      "suggested_aggregation": "SUM"
+    }
+  ],
+  "non_additive_fields": [
+    {
+      "name": "score_prom",
+      "label": "Average Review Score",
+      "reason": "Review score is not additive; it represents the average score of reviews for a single order."
+    },
+    {
+      "name": "entrega_tarde",
+      "label": "Late Delivery",
+      "reason": "Counting late deliveries may duplicate entities because of the grain (order level)."
+    }
+  ],
+  "suggested_synonyms": {
+    "n_resenas": "Number of Reviews",
+    "n_resenas_bajas": "Number of Low Reviews",
+    "precio": "Order Price",
+    "flete": "Shipping Cost",
+    "n_items": "Number of Items",
+    "n_vendedores": "Number of Sellers"
+  },
+  "ambiguities": [
+    {
+      "term": "pedido_bajo",
+      "description": "The term 'pedido_bajo' is ambiguous. It could refer to a low-quality order or a low-value order. Clarification is needed."
+    },
+    {
+      "term": "cumplimiento_plazo",
+      "description": "The term 'cumplimiento_plazo' is ambiguous. It could refer to on-time delivery or fulfillment within a deadline. Clarification is needed."
+    }
+  ],
+  "validation_questions": [
+    {
+      "question": "Should 'entrega_tarde' be summed? It might duplicate entities due to the grain.",
+      "context": "Counting late deliveries may duplicate entities because of the grain (order level)."
+    },
+    {
+      "question": "Is'score_prom' additive? It seems to represent an average score for an order.",
+      "context": "Review score is not additive; it represents the average score of reviews for a single order."
+    }
+  ]
+}

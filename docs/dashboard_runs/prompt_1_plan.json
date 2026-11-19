@@ -1,0 +1,287 @@
+{
+  "final_spec": {
+    "schema_version": "1.0",
+    "title": "Dashboard de Insatisfacción del Cliente",
+    "description": "Análisis ejecutivo de la insatisfacción del cliente en Olist, incluyendo el porcentaje de pedidos insatisfechos, la calificación promedio, la tasa de entrega tardía, el número de pedidos, la evolución anual y la insatisfacción por región.",
+    "filters": [
+      {
+        "dimension": "anio",
+        "operator": "=",
+        "value": 2025
+      }
+    ],
+    "components": [
+      {
+        "id": "k1",
+        "type": "kpi",
+        "title": "Porcentaje de Pedidos Insatisfechos",
+        "metric": "kpi1_pct_pedidos_bajos",
+        "dimensions": [],
+        "visualization": "number",
+        "filters": [],
+        "sort": null,
+        "limit": null
+      },
+      {
+        "id": "k2",
+        "type": "kpi",
+        "title": "Calificación Promedio por Pedido",
+        "metric": "kpi3_calificacion_promedio",
+        "dimensions": [],
+        "visualization": "number",
+        "filters": [],
+        "sort": null,
+        "limit": null
+      },
+      {
+        "id": "k3",
+        "type": "kpi",
+        "title": "Tasa de Entrega Tardía",
+        "metric": "kpi5_tasa_entrega_tardia",
+        "dimensions": [],
+        "visualization": "number",
+        "filters": [],
+        "sort": null,
+        "limit": null
+      },
+      {
+        "id": "c1",
+        "type": "chart",
+        "title": "Evolución Anual de Pedidos",
+        "metric": "pedidos",
+        "dimensions": [
+          "anio"
+        ],
+        "visualization": "line",
+        "filters": [],
+        "sort": null,
+        "limit": null
+      },
+      {
+        "id": "c2",
+        "type": "chart",
+        "title": "Insatisfacción por Región",
+        "metric": "kpi1_pct_pedidos_bajos",
+        "dimensions": [
+          "region_cliente"
+        ],
+        "visualization": "bar",
+        "filters": [],
+        "sort": "desc",
+        "limit": 10
+      }
+    ],
+    "rejected_requests": [
+      {
+        "request": "Compradores únicos / clientes",
+        "reason": "No disponible en el catálogo"
+      }
+    ]
+  },
+  "attempts": [
+    {
+      "attempt": 1,
+      "spec": {
+        "schema_version": "1.0",
+        "title": "Dashboard de Insatisfacción del Cliente",
+        "description": "Análisis ejecutivo de la insatisfacción del cliente en Olist, incluyendo el porcentaje de pedidos insatisfechos, la calificación promedio, la tasa de entrega tardía, el número de pedidos, la evolución anual y la insatisfacción por región.",
+        "filters": [
+          {
+            "dimension": "anio",
+            "operator": "=",
+            "value": 2025
+          }
+        ],
+        "components": [
+          {
+            "id": "k1",
+            "type": "kpi",
+            "title": "Porcentaje de Pedidos Insatisfechos",
+            "metric": "kpi1_pct_pedidos_bajos",
+            "dimensions": [],
+            "visualization": "number",
+            "filters": [],
+            "sort": null,
+            "limit": null
+          },
+          {
+            "id": "k2",
+            "type": "kpi",
+            "title": "Calificación Promedio por Pedido",
+            "metric": "kpi3_calificacion_promedio",
+            "dimensions": [],
+            "visualization": "number",
+            "filters": [],
+            "sort": null,
+            "limit": null
+          },
+          {
+            "id": "k3",
+            "type": "kpi",
+            "title": "Tasa de Entrega Tardía",
+            "metric": "kpi5_tasa_entrega_tardia",
+            "dimensions": [],
+            "visualization": "number",
+            "filters": [],
+            "sort": null,
+            "limit": null
+          },
+          {
+            "id": "c1",
+            "type": "chart",
+            "title": "Evolución Anual de Pedidos",
+            "metric": "pedidos",
+            "dimensions": [
+              "anio"
+            ],
+            "visualization": "line",
+            "filters": [],
+            "sort": null,
+            "limit": null
+          },
+          {
+            "id": "c2",
+            "type": "chart",
+            "title": "Insatisfacción por Región",
+            "metric": "kpi1_pct_pedidos_bajos",
+            "dimensions": [
+              "region_cliente"
+            ],
+            "visualization": "bar",
+            "filters": [],
+            "sort": "desc",
+            "limit": 10
+          }
+        ],
+        "rejected_requests": [
+          {
+            "request": "Compradores únicos / clientes",
+            "reason": "No disponible en el catálogo"
+          }
+        ]
+      },
+      "errors": [],
+      "missing": []
+    }
+  ],
+  "rejected": [
+    {
+      "id": null,
+      "title": "Compradores únicos / clientes",
+      "reason": "No disponible en el catálogo",
+      "kind": "planner"
+    },
+    {
+      "id": "filtro global",
+      "title": "anio = 2025",
+      "reason": "Corregido: el planner agregó un filtro de año que el usuario no pidió; se eliminó.",
+      "kind": "corrected"
+    }
+  ],
+  "components": [
+    {
+      "id": "k1",
+      "type": "kpi",
+      "title": "Porcentaje de Pedidos Insatisfechos",
+      "metric": "kpi1_pct_pedidos_bajos",
+      "dimensions": [],
+      "visualization": "number",
+      "filters": [],
+      "sort": null,
+      "limit": null,
+      "metric_label": "KPI-1 % de pedidos con calificacion baja",
+      "sql": "SELECT 100.0 * SUM(pedido_bajo) / NULLIF(SUM(tiene_resena), 0) AS kpi1_pct_pedidos_bajos\nFROM vw_olist_genbi_pedidos",
+      "athena": {
+        "query_execution_id": "1c27490e-c9f0-47e6-a7e1-51c325b65179",
+        "engine_execution_ms": 2268,
+        "total_execution_ms": 2529,
+        "data_scanned_bytes": 51032712
+      },
+      "error": null
+    },
+    {
+      "id": "k2",
+      "type": "kpi",
+      "title": "Calificación Promedio por Pedido",
+      "metric": "kpi3_calificacion_promedio",
+      "dimensions": [],
+      "visualization": "number",
+      "filters": [],
+      "sort": null,
+      "limit": null,
+      "metric_label": "KPI-3 Calificacion promedio por pedido",
+      "sql": "SELECT AVG(score_prom) AS kpi3_calificacion_promedio\nFROM vw_olist_genbi_pedidos",
+      "athena": {
+        "query_execution_id": "f5fd6f19-5e3d-4673-a231-8908ab138eaf",
+        "engine_execution_ms": 3283,
+        "total_execution_ms": 3451,
+        "data_scanned_bytes": 51032712
+      },
+      "error": null
+    },
+    {
+      "id": "k3",
+      "type": "kpi",
+      "title": "Tasa de Entrega Tardía",
+      "metric": "kpi5_tasa_entrega_tardia",
+      "dimensions": [],
+      "visualization": "number",
+      "filters": [],
+      "sort": null,
+      "limit": null,
+      "metric_label": "KPI-5 Tasa de entrega tardia",
+      "sql": "SELECT 100.0 * SUM(entrega_tarde) / NULLIF(SUM(entrega_evaluable), 0) AS kpi5_tasa_entrega_tardia\nFROM vw_olist_genbi_pedidos",
+      "athena": {
+        "query_execution_id": "e139ba74-8ba3-43aa-a63e-2294d5c010d6",
+        "engine_execution_ms": 1851,
+        "total_execution_ms": 2043,
+        "data_scanned_bytes": 50907248
+      },
+      "error": null
+    },
+    {
+      "id": "c1",
+      "type": "chart",
+      "title": "Evolución Anual de Pedidos",
+      "metric": "pedidos",
+      "dimensions": [
+        "anio"
+      ],
+      "visualization": "line",
+      "filters": [],
+      "sort": null,
+      "limit": null,
+      "metric_label": "Pedidos",
+      "sql": "SELECT anio, COUNT(DISTINCT order_id) AS pedidos\nFROM vw_olist_genbi_pedidos\nGROUP BY anio\nORDER BY anio ASC",
+      "athena": {
+        "query_execution_id": "2330f19f-2125-414c-9493-f303d3dc738e",
+        "engine_execution_ms": 2438,
+        "total_execution_ms": 2643,
+        "data_scanned_bytes": 50896881
+      },
+      "error": null
+    },
+    {
+      "id": "c2",
+      "type": "chart",
+      "title": "Insatisfacción por Región",
+      "metric": "kpi1_pct_pedidos_bajos",
+      "dimensions": [
+        "region_cliente"
+      ],
+      "visualization": "bar",
+      "filters": [],
+      "sort": "desc",
+      "limit": 10,
+      "metric_label": "KPI-1 % de pedidos con calificacion baja",
+      "sql": "SELECT region_cliente, 100.0 * SUM(pedido_bajo) / NULLIF(SUM(tiene_resena), 0) AS kpi1_pct_pedidos_bajos\nFROM vw_olist_genbi_pedidos\nGROUP BY region_cliente\nORDER BY kpi1_pct_pedidos_bajos DESC\nLIMIT 10",
+      "athena": {
+        "query_execution_id": "8d0c102a-f254-4355-9fbf-4899c1f92193",
+        "engine_execution_ms": 2768,
+        "total_execution_ms": 3124,
+        "data_scanned_bytes": 51032912
+      },
+      "error": null
+    }
+  ]
+}

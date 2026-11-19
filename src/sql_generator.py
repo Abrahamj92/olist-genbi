@@ -247,6 +247,39 @@ def extract_sql(text):
     return cleaned.strip()
 
 
+
+def _extra_kpi_columns(sql):
+    """
+    Olist governance control (single-KPI shape): if the query has no
+    GROUP BY, it must return exactly one column. Returns the list of
+    extra projections (empty when the shape is correct).
+    """
+    import sqlglot
+    from sqlglot import exp
+
+    tree = sqlglot.parse_one(sql, read="athena")
+    select = tree if isinstance(tree, exp.Select) else tree.find(exp.Select)
+    if select is None or select.args.get("group"):
+        return []
+    return select.expressions[1:] if len(select.expressions) > 1 else []
+
+
+def _keep_metric_column(sql, metric_sql):
+    """Keep only the projection that contains the approved expression."""
+    import sqlglot
+    from sqlglot import exp
+
+    tree = sqlglot.parse_one(sql, read="athena")
+    select = tree if isinstance(tree, exp.Select) else tree.find(exp.Select)
+    norm = lambda t: re.sub(r"\s+", "", t.lower())
+    target = norm(metric_sql)
+    keep = [e for e in select.expressions if target in norm(e.sql(dialect="athena"))]
+    if len(keep) != 1:
+        return None
+    select.set("expressions", keep)
+    return tree.sql(dialect="athena", pretty=True)
+
+
 def generate_sql(
     bedrock_client,
     question,
@@ -407,6 +440,55 @@ Generate the SQL query.
     )
 
     sql = extract_sql(raw_sql)
+
+    # --------------------------------------------------
+    # Olist control: single KPI -> single column
+    # (added after GQ10 failed with Bedrock: the model added an
+    # unrequested, mislabeled COUNT column)
+    # --------------------------------------------------
+
+    shape_control = None
+
+    if resolved and _extra_kpi_columns(sql):
+
+        retry_prompt = (
+            user_prompt
+            + "\n\nYOUR PREVIOUS SQL WAS REJECTED:\n"
+            + sql
+            + "\n\nThe question asks for ONE KPI. Return exactly one "
+            "column with the approved SQL expression. Do not add counts "
+            "or any other column.\n"
+        )
+
+        raw_sql = bedrock_client.ask(
+            system_prompt=SQL_SYSTEM_PROMPT,
+            user_prompt=retry_prompt,
+            max_tokens=1000,
+            temperature=0,
+        )
+
+        sql = extract_sql(raw_sql)
+        shape_control = "Single-KPI control: regenerated (extra column rejected)"
+
+        if _extra_kpi_columns(sql):
+            trimmed = _keep_metric_column(sql, resolved["metric"]["sql"])
+            if trimmed is None:
+                return {
+                    "status": "clarification",
+                    "interpretation": interpretation,
+                    "metric_used": metric_name,
+                    "semantic_rule_applied": semantic_rule,
+                    "sql": None,
+                    "clarification_question": (
+                        "No se pudo generar una consulta de un solo KPI. "
+                        "Reformula la pregunta, por ejemplo indicando el desglose."
+                    ),
+                }
+            sql = trimmed
+            shape_control = "Single-KPI control: extra columns removed"
+
+    if shape_control:
+        semantic_rule = f"{semantic_rule} | {shape_control}"
 
     return {
         "status": "ok",

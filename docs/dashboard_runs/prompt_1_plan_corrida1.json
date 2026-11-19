@@ -1,0 +1,90 @@
+{
+  "schema_version": "1.0",
+  "title": "Dashboard de Insatisfacción del Cliente",
+  "description": "Análisis ejecutivo de la insatisfacción del cliente con métricas clave y evolución temporal.",
+  "filters": [
+    {
+      "dimension": "anio",
+      "operator": "=",
+      "value": 2025
+    }
+  ],
+  "components": [
+    {
+      "id": "k1",
+      "type": "kpi",
+      "title": "Porcentaje de Pedidos Insatisfechos",
+      "metric": "kpi1_pct_pedidos_bajos",
+      "dimensions": [],
+      "visualization": "number",
+      "filters": [],
+      "sort": null,
+      "limit": null
+    },
+    {
+      "id": "k2",
+      "type": "kpi",
+      "title": "Calificación Promedio por Pedido",
+      "metric": "kpi3_calificacion_promedio",
+      "dimensions": [],
+      "visualization": "number",
+      "filters": [],
+      "sort": null,
+      "limit": null
+    },
+    {
+      "id": "k3",
+      "type": "kpi",
+      "title": "Tasa de Entrega Tardía",
+      "metric": "kpi5_tasa_entrega_tardia",
+      "dimensions": [],
+      "visualization": "number",
+      "filters": [],
+      "sort": null,
+      "limit": null
+    },
+    {
+      "id": "k4",
+      "type": "kpi",
+      "title": "Número de Pedidos",
+      "metric": "pedidos",
+      "dimensions": [],
+      "visualization": "number",
+      "filters": [],
+      "sort": null,
+      "limit": null
+    },
+    {
+      "id": "c1",
+      "type": "chart",
+      "title": "Evolución Anual de Insatisfacción",
+      "metric": "kpi1_pct_pedidos_bajos",
+      "dimensions": [
+        "anio"
+      ],
+      "visualization": "line",
+      "filters": [],
+      "sort": null,
+      "limit": null
+    },
+    {
+      "id": "c2",
+      "type": "chart",
+      "title": "Insatisfacción por Región",
+      "metric": "kpi1_pct_pedidos_bajos",
+      "dimensions": [
+        "region_cliente"
+      ],
+      "visualization": "bar",
+      "filters": [],
+      "sort": "desc",
+      "limit": 10
+    }
+  ],
+  "rejected_requests": [
+    {
+      "request": "Compradores únicos / clientes",
+      "reason": "No disponible en el catálogo"
+    }
+  ]
+}

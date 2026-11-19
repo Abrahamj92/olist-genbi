@@ -1,0 +1,35 @@
+{
+  "version": "1.0",
+  "notes": "Prompts bajo 1500 caracteres. La selección final de componentes la determina Bedrock y la Semantic Layer aprobada de Olist.",
+  "scenarios": [
+    {
+      "id": "executive",
+      "title": "Dirección: insatisfacción",
+      "prompt": "Construye un dashboard ejecutivo de insatisfacción del cliente de Olist. Prioriza el porcentaje de pedidos insatisfechos, la calificación promedio, la tasa de entrega tardía y el número de pedidos. Añade la evolución anual de la insatisfacción, la insatisfacción según el cumplimiento del plazo y por región. Evita duplicar la misma métrica y dimensión. No infieras causas ni inventes resultados.",
+      "focus_metrics": ["kpi1_pct_pedidos_bajos", "kpi3_calificacion_promedio", "kpi5_tasa_entrega_tardia", "pedidos"],
+      "focus_dimensions": ["anio", "cumplimiento_plazo", "region_cliente"]
+    },
+    {
+      "id": "logistics",
+      "title": "Logística y flete",
+      "prompt": "Construye un dashboard logístico de Olist centrado en la tasa de entrega tardía y el peso del flete sobre el precio. Compara la insatisfacción por rango de flete y por cumplimiento del plazo, y la entrega tardía por región. Añade la evolución anual de la entrega tardía. Usa únicamente métricas aprobadas y no inventes cifras ni causas.",
+      "focus_metrics": ["kpi5_tasa_entrega_tardia", "kpi8_flete_sobre_precio", "kpi1_pct_pedidos_bajos"],
+      "focus_dimensions": ["rango_flete", "cumplimiento_plazo", "region_cliente", "anio"]
+    },
+    {
+      "id": "reviews",
+      "title": "Reseñas y categorías",
+      "prompt": "Construye un dashboard de reseñas de Olist. Muestra el número de reseñas, el porcentaje de reseñas bajas y la calificación promedio. Compara la insatisfacción por categoría de producto (solo pedidos de una categoría), por número de vendedores en el pedido y por estado del cliente. No atribuyas la insatisfacción a un producto ni infieras causas.",
+      "focus_metrics": ["resenas", "kpi2_pct_resenas_bajas", "kpi3_calificacion_promedio", "kpi1_pct_pedidos_bajos"],
+      "focus_dimensions": ["categoria_unica", "grupo_vendedores", "estado_cliente"]
+    },
+    {
+      "id": "customers",
+      "title": "Clientes (prueba de gobierno)",
+      "prompt": "Construye un dashboard de clientes de Olist con clientes únicos, recompra y lifetime value, junto con KPI generales de pedidos y ventas por región. No confundas pedidos con clientes únicos y no calcules métricas que no estén aprobadas en la Semantic Layer.",
+      "focus_metrics": ["pedidos", "ventas_productos"],
+      "focus_dimensions": ["region_cliente"],
+      "must_not_appear": ["compradores_unicos"]
+    }
+  ]
+}

@@ -1,0 +1,234 @@
+{
+  "passed": 11,
+  "total": 11,
+  "results": [
+    {
+      "id": "GQ01",
+      "question": "¿Cuántos pedidos con reseña hay?",
+      "interpretation": "\"pedidos con resena\" → Pedidos con resena",
+      "generated_sql": "SELECT SUM(tiene_resena) AS pedidos_con_resena\nFROM vw_olist_genbi_pedidos;",
+      "generated": [
+        {
+          "pedidos_con_resena": "441600"
+        }
+      ],
+      "reference": [
+        {
+          "pedidos_con_resena": "441600"
+        }
+      ],
+      "details": {
+        "generated": 441600.0,
+        "reference": 441600.0,
+        "difference": 0.0
+      },
+      "passed": true
+    },
+    {
+      "id": "GQ02",
+      "question": "¿Cuál es el porcentaje de pedidos insatisfechos?",
+      "interpretation": "\"porcentaje de pedidos insatisfechos\" → KPI-1 % de pedidos con calificacion baja",
+      "generated_sql": "SELECT 100.0 * SUM(pedido_bajo) / NULLIF(SUM(tiene_resena), 0) AS kpi1_pct_pedidos_bajos\nFROM vw_olist_genbi_pedidos",
+      "generated": [
+        {
+          "kpi1_pct_pedidos_bajos": "15.207201086956522"
+        }
+      ],
+      "reference": [
+        {
+          "kpi1_pct": "15.207201086956522"
+        }
+      ],
+      "details": {
+        "generated": 15.207201086956522,
+        "reference": 15.207201086956522,
+        "difference": 0.0
+      },
+      "passed": true
+    },
+    {
+      "id": "GQ03",
+      "question": "¿Cuál es la calificación promedio?",
+      "interpretation": "\"calificacion promedio\" → KPI-3 Calificacion promedio por pedido",
+      "generated_sql": "SELECT AVG(score_prom) AS kpi3_calificacion_promedio\nFROM vw_olist_genbi_pedidos",
+      "generated": [
+        {
+          "kpi3_calificacion_promedio": "3.716714598429952"
+        }
+      ],
+      "reference": [
+        {
+          "kpi3": "3.7167145984299523"
+        }
+      ],
+      "details": {
+        "generated": 3.716714598429952,
+        "reference": 3.7167145984299523,
+        "difference": 4.440892098500626e-16
+      },
+      "passed": true
+    },
+    {
+      "id": "GQ04",
+      "question": "¿Qué porcentaje de reseñas bajas tenemos?",
+      "interpretation": "\"porcentaje de resenas bajas\" → KPI-2 % de resenas bajas",
+      "generated_sql": "SELECT \n    100.0 * SUM(n_resenas_bajas) / NULLIF(SUM(n_resenas), 0) AS kpi2_pct_resenas_bajas\nFROM \n    vw_olist_genbi_pedidos",
+      "generated": [
+        {
+          "kpi2_pct_resenas_bajas": "15.249242409281116"
+        }
+      ],
+      "reference": [
+        {
+          "kpi2_pct": "15.249242409281116"
+        }
+      ],
+      "details": {
+        "generated": 15.249242409281116,
+        "reference": 15.249242409281116,
+        "difference": 0.0
+      },
+      "passed": true
+    },
+    {
+      "id": "GQ05",
+      "question": "¿Cuántas reseñas hay en total?",
+      "interpretation": "\"resenas\" → Resenas",
+      "generated_sql": "SELECT SUM(n_resenas) AS resenas\nFROM vw_olist_genbi_pedidos;",
+      "generated": [
+        {
+          "resenas": "455721"
+        }
+      ],
+      "reference": [
+        {
+          "resenas": "455721"
+        }
+      ],
+      "details": {
+        "generated": 455721.0,
+        "reference": 455721.0,
+        "difference": 0.0
+      },
+      "passed": true
+    },
+    {
+      "id": "GQ06",
+      "question": "¿Cuál fue el porcentaje de pedidos insatisfechos en 2017?",
+      "interpretation": "\"porcentaje de pedidos insatisfechos\" → KPI-1 % de pedidos con calificacion baja",
+      "generated_sql": "SELECT \n  100.0 * SUM(pedido_bajo) / NULLIF(SUM(tiene_resena), 0) AS kpi1_pct_pedidos_bajos\nFROM \n  vw_olist_genbi_pedidos\nWHERE \n  anio = 2017",
+      "generated": [
+        {
+          "kpi1_pct_pedidos_bajos": "14.413830120320258"
+        }
+      ],
+      "reference": [
+        {
+          "kpi1_pct": "14.413830120320258"
+        }
+      ],
+      "details": {
+        "generated": 14.413830120320258,
+        "reference": 14.413830120320258,
+        "difference": 0.0
+      },
+      "passed": true
+    },
+    {
+      "id": "GQ07",
+      "question": "¿Cuál fue la tasa de entrega tardía en 2025?",
+      "interpretation": "\"tasa de entrega tardia\" → KPI-5 Tasa de entrega tardia",
+      "generated_sql": "SELECT \n  100.0 * SUM(entrega_tarde) / NULLIF(SUM(entrega_evaluable), 0) AS kpi5_tasa_entrega_tardia\nFROM \n  vw_olist_genbi_pedidos\nWHERE \n  anio = 2025",
+      "generated": [
+        {
+          "kpi5_tasa_entrega_tardia": "9.238431548651793"
+        }
+      ],
+      "reference": [
+        {
+          "kpi5_pct": "9.238431548651793"
+        }
+      ],
+      "details": {
+        "generated": 9.238431548651793,
+        "reference": 9.238431548651793,
+        "difference": 0.0
+      },
+      "passed": true
+    },
+    {
+      "id": "GQ08",
+      "question": "¿Cuánto vendimos en total?",
+      "interpretation": "\"vendimos\" → Ventas de productos (R$)",
+      "generated_sql": "SELECT SUM(precio) AS ventas_productos\nFROM vw_olist_genbi_pedidos",
+      "generated": [
+        {
+          "ventas_productos": "8.6437222100016E7"
+        }
+      ],
+      "reference": [
+        {
+          "ventas": "8.643722210001402E7"
+        }
+      ],
+      "details": {
+        "generated": 86437222.100016,
+        "reference": 86437222.10001402,
+        "difference": 1.9818544387817383e-06
+      },
+      "passed": true
+    },
+    {
+      "id": "GQ09",
+      "question": "¿Cuál es la proporción de flete sobre precio?",
+      "interpretation": "\"proporcion de flete\" → KPI-8 Flete / precio (global)",
+      "generated_sql": "SELECT 100.0 * SUM(flete) / NULLIF(SUM(precio), 0) AS proporcion_flete_precio\nFROM vw_olist_genbi_pedidos;",
+      "generated": [
+        {
+          "proporcion_flete_precio": "18.626004652686195"
+        }
+      ],
+      "reference": [
+        {
+          "kpi8_pct": "18.626004652685403"
+        }
+      ],
+      "details": {
+        "generated": 18.626004652686195,
+        "reference": 18.626004652685403,
+        "difference": 7.922551503725117e-13
+      },
+      "passed": true
+    },
+    {
+      "id": "GQ10",
+      "question": "¿Cuál es el porcentaje de pedidos insatisfechos con 2 o más vendedores?",
+      "interpretation": "\"porcentaje de pedidos insatisfechos\" → KPI-1 % de pedidos con calificacion baja",
+      "generated_sql": "SELECT \n    100.0 * SUM(pedido_bajo) / NULLIF(SUM(tiene_resena), 0) AS porcentaje_pedidos_insatisfechos\nFROM \n    vw_olist_genbi_pedidos\nWHERE \n    grupo_vendedores = '2 o mas'",
+      "generated": [
+        {
+          "porcentaje_pedidos_insatisfechos": "15.774161287389763"
+        }
+      ],
+      "reference": [
+        {
+          "kpi1_pct": "15.774161287389763"
+        }
+      ],
+      "details": {
+        "generated": 15.774161287389763,
+        "reference": 15.774161287389763,
+        "difference": 0.0
+      },
+      "passed": true
+    },
+    {
+      "id": "GQ11",
+      "question": "¿Cuántos clientes únicos tenemos?",
+      "interpretation": "\"clientes unicos\" → Compradores unicos / clientes (no disponible)",
+      "generated_sql": null,
+      "result": "La metrica de clientes o compradores unicos no esta disponible en el datamart. El modelo mide la insatisfaccion por pedido y por resena.",
+      "passed": true
+    }
+  ]
+}

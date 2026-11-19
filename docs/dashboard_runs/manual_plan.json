@@ -1,0 +1,91 @@
+{
+  "schema_version": "1.0",
+  "title": "Tablero ejecutivo de insatisfacción (JSON manual)",
+  "description": "Especificación escrita a mano para probar el motor sin IA.",
+  "filters": [],
+  "components": [
+    {
+      "id": "k1",
+      "type": "kpi",
+      "title": "% pedidos insatisfechos (KPI-1)",
+      "metric": "kpi1_pct_pedidos_bajos",
+      "dimensions": [],
+      "visualization": "number",
+      "filters": [],
+      "sort": null,
+      "limit": null
+    },
+    {
+      "id": "k2",
+      "type": "kpi",
+      "title": "Calificación promedio (KPI-3)",
+      "metric": "kpi3_calificacion_promedio",
+      "dimensions": [],
+      "visualization": "number",
+      "filters": [],
+      "sort": null,
+      "limit": null
+    },
+    {
+      "id": "k3",
+      "type": "kpi",
+      "title": "Entrega tardía (KPI-5)",
+      "metric": "kpi5_tasa_entrega_tardia",
+      "dimensions": [],
+      "visualization": "number",
+      "filters": [],
+      "sort": null,
+      "limit": null
+    },
+    {
+      "id": "k4",
+      "type": "kpi",
+      "title": "Pedidos",
+      "metric": "pedidos",
+      "dimensions": [],
+      "visualization": "number",
+      "filters": [],
+      "sort": null,
+      "limit": null
+    },
+    {
+      "id": "c1",
+      "type": "chart",
+      "title": "KPI-1 por año",
+      "metric": "kpi1_pct_pedidos_bajos",
+      "dimensions": [
+        "anio"
+      ],
+      "visualization": "line",
+      "filters": [],
+      "sort": null,
+      "limit": null
+    },
+    {
+      "id": "c2",
+      "type": "chart",
+      "title": "KPI-1 según cumplimiento del plazo",
+      "metric": "kpi1_pct_pedidos_bajos",
+      "dimensions": [
+        "cumplimiento_plazo"
+      ],
+      "visualization": "bar",
+      "filters": [],
+      "sort": "desc",
+      "limit": 10
+    },
+    {
+      "id": "c3",
+      "type": "chart",
+      "title": "KPI-1 por región",
+      "metric": "kpi1_pct_pedidos_bajos",
+      "dimensions": [
+        "region_cliente"
+      ],
+      "visualization": "bar",
+      "filters": [],
+      "sort": "desc",
+      "limit": 10
+    }
+  ]
+}
